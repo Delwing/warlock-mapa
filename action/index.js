@@ -14,7 +14,16 @@ Object.entries(mapModel.areaNames).forEach(([key, value]) => {
         delete mapModel.areas[key];
     }
 })
-mapModel.rooms = Object.fromEntries(Object.entries(mapModel.rooms).filter(([roomId, room]) => Object.keys(mapModel.areaNames).indexOf(room.area.toString() > -1)))
 
+const exitKeys = ["east", "west", "north", "south", "northeast", "northwest", "southeast", "southwest", "up", "down", "in", "out"]
 
+let roomsToDelete = Object.entries(mapModel.rooms).filter(([roomId, room]) => Object.keys(mapModel.areaNames).indexOf(room.area.toString()) == -1).map(([roomId, room]) => roomId)
+roomsToDelete.forEach(id => delete mapModel.rooms[id])
+Object.entries(mapModel.rooms).forEach(([roomId, room]) => {
+    exitKeys.forEach(key => {
+        if (roomsToDelete.indexOf(room[key].toString()) > -1) {
+            room[key] = -1
+        }
+    })
+})
 let { mudletMap, colors } = MudletMapReader.export(mapModel, outputDirectory);
