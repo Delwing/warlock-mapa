@@ -8,7 +8,12 @@ const outputDirectory = "page/data"
  */
 let mapModel = MudletMapReader.read(inputFile);
 
-mapModel.areaNames = Object.fromEntries(Object.entries(mapModel.areaNames).filter(([key, value]) => !value.startsWith("Czarna wieza")))
+Object.entries(mapModel.areaNames).forEach(([key, value]) => {
+    if (value.startsWith("Czarna wieza")) {
+        delete mapModel.areaNames[key];
+        delete mapModel.areas[key];
+    }
+})
 mapModel.rooms = Object.fromEntries(Object.entries(mapModel.rooms).filter(([roomId, room]) => Object.keys(mapModel.areaNames).indexOf(room.area.toString() > -1)))
 
 
