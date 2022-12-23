@@ -12,7 +12,7 @@ jobs:
         id: diff
         uses: Delwing/mudlet-map-diff-action@v4
         with:
-          old-map: map_master3.dat
+          old-map: map.dat
           reuse-comment: true
         env:
           CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
